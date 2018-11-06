@@ -1,32 +1,80 @@
-.App {
-  text-align: center;
+.none {
+  display: none;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+body {
+  font-family: sans-serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+p {
+  margin: 0 0 5px;
+}
+
+.todo_item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  background: #FFF;
+  border: 1px solid rgba(0, 89, 181, 0.82);
+  width: 600px;
+  margin: 0 0 5px;
+  box-shadow: 2px 2px 5px -1px rgb(0, 81, 202);
+  padding: 3px 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.todo_item_status {
+  position: relative;
+  display: block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.todo_item_status.done::before {
+  content: '';
+  position: absolute; 
+  left: -5px;
+  width: 10px;
+  height: 3px;
+  background: green;
+  -webkit-transform: rotate(50deg);
+  transform: rotate(50deg);  
+}
+
+.todo_item_status.done::after{
+  content: '';
+  position: absolute; 
+  left: 0;
+  width: 16px;
+  height: 3px;
+  background: green;
+  -webkit-transform: rotate(-50deg);
+  transform: rotate(-50deg); 
+}
+
+.add {
+  margin: 0 5px 5px 0;
+  width: 210px;
+  border: 1px dashed rgba(0, 89, 181, 0.82);
+  padding: 5px;
+}
+
+.add_btn {
+  display: block;
+  margin: 0 0 5px 0;
+  padding: 5px;
+  width: 94%;
+  border: 1px solid rgba(0, 89, 181, 0.82);
+}
+
+.add_btn {
+  box-sizing: content-box;
+  color: #FFF;
+  text-transform: uppercase;
+  background: #007DDC;
+}
+
+.add_btn:disabled {
+  background: #CCC;
+  color: #999;
 }

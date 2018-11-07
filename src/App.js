@@ -19,51 +19,22 @@ const todoItems = [
   },
 ];
 
-class ToDoItem extends React.Component {
+const ToDoItem = ({onCheck=f=>f, data}) =>
+  <div className='todo_item'>
+      <p className='todo_item_text'>{data.text}</p>
+      <div onClick={onCheck} className={data.done ? 'todo_item_status done' : 'todo_item_status'}></div>
+  </div>
 
-  handleBox = () =>{
-    this.props.onCheck({
-      id: this.props.data.id,
-      done : !this.props.data.done
-    })
-  }
-
-  render() {
-    const { text, done } = this.props.data
-    return (
-      <div className='todo_item'>
-        <p className='todo_item_text'>{text}</p>
-        <div onClick={this.handleBox} className={done ? 'todo_item_status done' : 'todo_item_status'}></div>
-      </div>
-    )
-  }
-}
-
-class ToDoList extends React.Component {
-  renderToDoList = () => {
-    const { data, onCheckItem } = this.props
-    let todoList = null
-
-    if (data.length) {
-      console.log(data)
-      todoList = data.map(function (item) {
-        return <ToDoItem key={item.id} data={item} onCheck={(args)=>onCheckItem(args.id, args.done)}/>
-      })
-    } else {
-      todoList = <p>Список пуст</p>
+const ToDoList = ({data,onCheckItem=f=>f}) =>
+  <div className='todo_list'>
+    {
+      data.length ?
+      data.map(function (item) {
+        return <ToDoItem key={item.id} data={item} onCheck={(data)=>onCheckItem(item.id)}/>
+      }) 
+      : <p>Список пуст</p>
     }
-
-    return todoList
-  }
-  render() {
-    return (
-      <div className='todo_list'>
-        {this.renderToDoList()}
-      </div>
-    );
-  }
-}
-
+  </div>
 
 class Add extends React.Component {
   state = {
@@ -77,6 +48,9 @@ class Add extends React.Component {
       id: this.props.getLastID() + 1,
       text,
       done: false
+    })
+    this.setState({
+      text: ''
     })
   }
 
@@ -118,11 +92,12 @@ class App extends React.Component {
     this.setState({ todo: newTodo })
   }
 
-  onCheckItem = (data) =>{
-    let newTodo = this.state.todo.map((el)=>{
-      if(el.id == data.id){
-        el.done = data.done;
+  onCheckItem = (id) =>{
+    const newTodo = this.state.todo.map((el)=>{
+      if(el.id == id){
+        el.done = !el.done
       }
+      return el;
     })
 
     this.setState({

@@ -16,107 +16,129 @@ const todoItems = [
     id: 3,
     text: 'Пойти в магаз',
     done: false
-  },
+  }
 ];
 
-const ToDoItem = ({onCheck=f=>f, data}) =>
-  <div className='todo_item'>
-      <p className='todo_item_text'>{data.text}</p>
-      <div onClick={onCheck} className={data.done ? 'todo_item_status done' : 'todo_item_status'}></div>
+const ToDoItem = ({ onCheck = f => f, onRemove = f => f, data }) => (
+  <div className="todo_item">
+    <p className="todo_item_text">{data.text}</p>
+    <div
+      onClick={onCheck}
+      className={data.done ? 'todo_item_status done' : 'todo_item_status'}
+    />
+    <button className="todo_item_remove" type="button" onClick={onRemove}>
+      ✕
+    </button>
   </div>
+);
 
-const ToDoList = ({data,onCheckItem=f=>f}) =>
-  <div className='todo_list'>
-    {
-      data.length ?
-      data.map(function (item) {
-        return <ToDoItem key={item.id} data={item} onCheck={(data)=>onCheckItem(item.id)}/>
-      }) 
-      : <p>Список пуст</p>
-    }
+const ToDoList = ({ data, onCheckItem = f => f, onRemoveItem = f => f }) => (
+  <div className="todo_list">
+    {data.length ? (
+      data.map(function(item) {
+        return (
+          <ToDoItem
+            key={item.id}
+            data={item}
+            onCheck={() => onCheckItem(item.id)}
+            onRemove={() => onRemoveItem(item.id)}
+          />
+        );
+      })
+    ) : (
+      <p>Список пуст</p>
+    )}
   </div>
+);
 
 class Add extends React.Component {
   state = {
-    text: '',
-  }
+    text: ''
+  };
 
-  onBtnClickHandler = (e) => {
-    e.preventDefault()
-    const { text } = this.state
+  onBtnClickHandler = e => {
+    e.preventDefault();
+    const { text } = this.state;
     this.props.onAddTodo({
       id: this.props.getLastID() + 1,
       text,
       done: false
-    })
+    });
     this.setState({
       text: ''
-    })
-  }
+    });
+  };
 
-  handleChange = (e) => {
-    const { id, value } = e.currentTarget
-    this.setState({ [id]: e.currentTarget.value })
-  }
+  handleChange = e => {
+    const { id, value } = e.currentTarget;
+    this.setState({ [id]: e.currentTarget.value });
+  };
 
   render() {
-    const { text } = this.state
+    const { text } = this.state;
     return (
-      <form className='add'>
+      <form className="add">
         <textarea
-          id='text'
+          id="text"
           onChange={this.handleChange}
-          className='add_text'
-          placeholder='Текст итема'
+          className="add_text"
+          placeholder="Текст итема"
           value={text}
-        ></textarea>
-        <button
-          className='add_btn'
-          onClick={this.onBtnClickHandler}>
+        />
+        <button className="add_btn" onClick={this.onBtnClickHandler}>
           Добавить итем
         </button>
       </form>
-    )
+    );
   }
 }
 
-
 class App extends React.Component {
-
   state = {
-    todo: todoItems,
-  }
+    todo: todoItems
+  };
 
-  handleAddTodo = (data) => {
-    const newTodo = [data, ...this.state.todo]
-    this.setState({ todo: newTodo })
-  }
+  handleAddTodo = data => {
+    const newTodo = [...this.state.todo, data];
+    this.setState({ todo: newTodo });
+  };
 
-  onCheckItem = (id) =>{
-    const newTodo = this.state.todo.map((el)=>{
-      if(el.id == id){
-        el.done = !el.done
+  onCheckItem = id => {
+    const newTodo = this.state.todo.map(el => {
+      if (el.id == id) {
+        el.done = !el.done;
       }
       return el;
-    })
+    });
 
     this.setState({
       todo: newTodo
-    })
-  }
+    });
+  };
 
-  getLastID = () =>{
-    return this.state.todo[this.state.todo.length - 1].id
-  }
+  onRemoveItem = id => {
+    const newTodo = this.state.todo.filter(el => el.id !== id);
+    this.setState({
+      todo: newTodo
+    });
+  };
+
+  getLastID = () => {
+    return this.state.todo[this.state.todo.length - 1].id; /* переписать */
+  };
 
   render() {
     return (
       <React.Fragment>
-        <Add onAddTodo={this.handleAddTodo} getLastID={this.getLastID}/>
+        <Add onAddTodo={this.handleAddTodo} getLastID={this.getLastID} />
         <h3>ToDo List</h3>
-        <ToDoList data={this.state.todo} onCheckItem={this.onCheckItem}/>
+        <ToDoList
+          data={this.state.todo}
+          onCheckItem={this.onCheckItem}
+          onRemoveItem={this.onRemoveItem}
+        />
       </React.Fragment>
-    )
+    );
   }
 }
 

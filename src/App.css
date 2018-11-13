@@ -32,24 +32,24 @@ p {
 
 .todo_item_status.done::before {
   content: '';
-  position: absolute; 
+  position: absolute;
   left: -5px;
   width: 10px;
   height: 3px;
   background: green;
   -webkit-transform: rotate(50deg);
-  transform: rotate(50deg);  
+  transform: rotate(50deg);
 }
 
-.todo_item_status.done::after{
+.todo_item_status.done::after {
   content: '';
-  position: absolute; 
+  position: absolute;
   left: 0;
   width: 16px;
   height: 3px;
   background: green;
   -webkit-transform: rotate(-50deg);
-  transform: rotate(-50deg); 
+  transform: rotate(-50deg);
 }
 
 .add {
@@ -85,4 +85,23 @@ button {
   color: white;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.btns_container {
+  display: flex;
+  width: 60px;
+  justify-content: space-between;
+}
+
+.todo_list {
+  width: 600px;
+}
+
+.todo_list_header {
+  display: flex;
+}
+
+.sort_by {
+  width: 33.33%;
+  border: 1px solid black;
 }

@@ -3,6 +3,11 @@ import './App.css';
 
 const todoItems = [
   {
+    id: 3,
+    text: 'Пойти в магаз',
+    done: false
+  },
+  {
     id: 1,
     text: 'Пойти гулять',
     done: false
@@ -11,31 +16,59 @@ const todoItems = [
     id: 2,
     text: 'Пойти в магаз',
     done: false
-  },
-  {
-    id: 3,
-    text: 'Пойти в магаз',
-    done: false
   }
 ];
 
-const ToDoItem = ({ onCheck = f => f, onRemove = f => f, data }) => (
-  <div className="todo_item">
-    <p className="todo_item_text">{data.text}</p>
-    <div
-      onClick={onCheck}
-      className={data.done ? 'todo_item_status done' : 'todo_item_status'}
-    />
-    <button className="todo_item_remove" type="button" onClick={onRemove}>
-      ✕
-    </button>
-  </div>
-);
+class ToDoItem extends Component {
+  state = {
+    visibility: false
+  }
 
-const ToDoList = ({ data, onCheckItem = f => f, onRemoveItem = f => f }) => (
+  onEnter = () =>{
+    this.setState({
+      visibility:true
+    })
+  }
+
+  onLeave = () =>{
+    this.setState({
+      visibility:false
+    })
+  }
+
+  render() {
+    const { data, onCheck = f => f, onRemove = f => f } = this.props
+    return (
+      <div className="todo_item" onMouseEnter={this.onEnter} onMouseLeave={this.onLeave}>
+        <p className="todo_item_text">{data.text}</p>
+        <div className="btns_container">
+          <div
+            onClick={onCheck}
+            className={data.done ? 'todo_item_status done' : 'todo_item_status'}
+          />
+          {
+            this.state.visibility ? 
+            <button className="todo_item_remove" type="button" onClick={onRemove}>
+            ✕
+            </button> :
+            ''
+          }
+          
+        </div>
+      </div>
+    )
+  }
+}
+
+const ToDoList = ({ data, onCheckItem = f => f, onRemoveItem = f => f, sortById = f => f, sortByStatus = f => f, sortByText = f => f }) => (
   <div className="todo_list">
+    <div className="todo_list_header">
+      <div onClick={sortById} className="sort_by sort_by_id">Сортировать по id</div>
+      <div onClick={sortByText} className="sort_by sort_by_text">Сортировать по алфавиту</div>
+      <div onClick={sortByStatus} className="sort_by sort_by_status">Сортировать по статусу</div>
+    </div>
     {data.length ? (
-      data.map(function(item) {
+      data.map(function (item) {
         return (
           <ToDoItem
             key={item.id}
@@ -46,12 +79,12 @@ const ToDoList = ({ data, onCheckItem = f => f, onRemoveItem = f => f }) => (
         );
       })
     ) : (
-      <p>Список пуст</p>
-    )}
+        <p>Список пуст</p>
+      )}
   </div>
 );
 
-class Add extends React.Component {
+class Add extends Component {
   state = {
     text: ''
   };
@@ -93,7 +126,7 @@ class Add extends React.Component {
   }
 }
 
-class App extends React.Component {
+class App extends Component {
   state = {
     todo: todoItems
   };
@@ -123,8 +156,29 @@ class App extends React.Component {
     });
   };
 
+  sortById = () =>{
+    const sortedTodo = this.state.todo.sort((a,b)=>{return a.id - b.id})
+    this.setState({
+      todo: sortedTodo
+    })
+  }
+
+  sortByText = () =>{
+    const sortedTodo = this.state.todo.sort((a,b)=>{return (a.text).localeCompare(b.text);})
+    this.setState({
+      todo: sortedTodo
+    })
+  }
+
+  sortByStatus = () =>{
+    const sortedTodo = this.state.todo.sort((a,b)=>{return a ===  b ? 0 : a? -1: 1})
+    this.setState({
+      todo: sortedTodo
+    })
+  }
+
   getLastID = () => {
-    return this.state.todo[this.state.todo.length - 1].id; /* переписать */
+    return this.state.todo.length;
   };
 
   render() {
@@ -136,6 +190,9 @@ class App extends React.Component {
           data={this.state.todo}
           onCheckItem={this.onCheckItem}
           onRemoveItem={this.onRemoveItem}
+          sortById={this.sortById}
+          sortByText={this.sortByText}
+          sortByStatus={this.sortByStatus}
         />
       </React.Fragment>
     );

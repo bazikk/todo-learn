@@ -11,6 +11,7 @@ p {
 }
 
 .todo_item {
+  position: absolute;
   display: flex;
   justify-content: space-between;
   background: #FFF;
@@ -19,6 +20,7 @@ p {
   margin: 0 0 5px;
   box-shadow: 2px 2px 5px -1px rgb(0, 81, 202);
   padding: 3px 5px;
+  transition: all .5s;
 }
 
 .todo_item_status {
@@ -94,6 +96,7 @@ button {
 }
 
 .todo_list {
+  position: relative;
   width: 600px;
 }
 

@@ -6,17 +6,17 @@ import './App.css';
 const todoItems = [
   {
     id: 3,
-    text: 'Пойти в магаз',
+    text: '3',
     done: false
   },
   {
     id: 1,
-    text: 'Пойти гулять',
+    text: '1',
     done: false
   },
   {
     id: 2,
-    text: 'Пойти в магаз',
+    text: '2',
     done: false
   }
 ];
@@ -71,7 +71,7 @@ class App extends Component {
 
   sortByStatus = () => {
     const sortedTodo = this.state.todo.sort((a, b) => {
-      return a === b ? 0 : a ? -1 : 1;
+      return a.done === b.done ? 0 : a.done ? -1 : 1;
     });
     this.setState({
       todo: sortedTodo

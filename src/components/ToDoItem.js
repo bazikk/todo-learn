@@ -18,9 +18,9 @@ class ToDoItem extends Component {
   }
 
   render() {
-    const { data, onCheck = f => f, onRemove = f => f } = this.props
+    const { data, onCheck = f => f, onRemove = f => f, top } = this.props
     return (
-      <div className="todo_item" onMouseEnter={this.onEnter} onMouseLeave={this.onLeave}>
+      <div style={{top:top}} className="todo_item" onMouseEnter={this.onEnter} onMouseLeave={this.onLeave}>
         <p className="todo_item_text">{data.text}</p>
         <div className="btns_container">
           <div
